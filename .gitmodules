@@ -1,0 +1,9 @@
+[submodule "lib/libopencm3"]
+	path = lib/libopencm3
+	url = https://github.com/libopencm3/libopencm3.git
+[submodule "lib/FreeRTOS-Plus-PTPd"]
+	path = lib/FreeRTOS-Plus-PTPd
+	url = git@github.com:BOJIT/FreeRTOS-Plus-PTPd.git
+[submodule "lib/FreeRTOS"]
+	path = lib/FreeRTOS
+	url = git@github.com:FreeRTOS/FreeRTOS.git
