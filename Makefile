@@ -50,12 +50,13 @@ $(DEVICES): % : dep_%
 	# Get device-specific files
 	$(eval OBJECTS = $(shell find build/$@ -name "*.o"))
 	$(eval DEPENDENCIES = $(shell find build/$@ -name "*.dep"))
+	$(eval DFLAGS = )
 	$(foreach DEP, $(DEPENDENCIES), $(eval DFLAGS += $(shell cat $(DEP))))
 	# GCC build and link goes here
 	$(CC) $(CFLAGS) $(DFLAGS) $(LFLAGS) $(SRC) $(OBJECTS) \
 	$(addprefix -I, $(INC)) -Wl,-Map=bin/$@/$@.map -o bin/$@/$@.elf
 	# Copy from ELF to binary format
-	$(OBJCOPY) -O binary $(BIN_DIR)/$@/$@.elf $(BIN_DIR)/$@/$@.bin
+	$(OBJCOPY) -O binary bin/$@/$@.elf bin/$@/$@.bin
 
 $(dep_DEVICES):
 	@echo "$(FORMAT_PURPLE)Building Dependencies for $@$(FORMAT_OFF)"

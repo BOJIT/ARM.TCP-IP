@@ -10,7 +10,8 @@ LIB_NAME = libopencm3.mk
 BUILD_DIR = $(ROOT_DIR)/build/$(DEVICE-NAME)/lib
 
 
-DEPENDENCIES := -L$(BUILD_DIR) -l$(DEVICE-FRAMEWORK) -Ilib/libopencm3/include
+DEPENDENCIES := -L$(BUILD_DIR) -Ilib/libopencm3/include
+DEPENDENCIES += -l$(patsubst lib%.a,%,$(DEVICE-FRAMEWORK))
 
 ############################# MAKEFILE GLOBALS #################################
 
