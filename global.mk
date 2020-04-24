@@ -12,5 +12,5 @@ CFLAGS = $(FLAGS) $(USER_FLAGS) $(OPT_FLAGS) # FLAGS is used to get user flags
 LFLAGS = -Wl,--gc-sections
 LFLAGS += --specs=nosys.specs
 LFLAGS += --specs=nano.specs
-#LFLAGS += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
-#LFLAGS += --static -nostartfiles
+LFLAGS += -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
+LFLAGS += --static -nostartfiles

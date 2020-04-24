@@ -15,7 +15,7 @@ BUILD_DIR := $(ROOT_DIR)/build/$(DEVICE-NAME)/dev
 OBJECTS := $(BUILD_DIR)/device_functions.o
 
 DEPENDENCIES := -I$(ROOT_DIR)/dev/$(DEVICE-NAME) -DSTM32F4 $(DEVICE-FLAGS)
-DEPENDENCIES += -T$(ROOT_DIR)/dev/$(DEVICE-NAME)/$(DEVICE-NAME)_HAL.ld
+DEPENDENCIES += -T$(ROOT_DIR)/dev/$(DEVICE-NAME)/$(DEVICE-NAME).ld
 
 ############################# MAKEFILE GLOBALS #################################
 

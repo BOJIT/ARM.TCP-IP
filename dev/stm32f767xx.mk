@@ -5,7 +5,7 @@
 DEVICE-NAME := stm32f767xx
 
 DEVICE-FLAGS := -mcpu=cortex-m7 -mthumb
-DEVICE-FLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+DEVICE-FLAGS += -mfloat-abi=hard -mfpu=fpv5-sp-d16
 
 DEVICE-FRAMEWORK := libopencm3_stm32f7.a
 

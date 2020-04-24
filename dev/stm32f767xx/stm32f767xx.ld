@@ -1,4 +1,4 @@
-/* Linker script for the STM32F407xxG chip (1024K flash, 128K RAM). */
+/* Linker script for the STM32F767xxG chip (2048K flash, 512K RAM). */
 
 /* Define memory regions. */
 MEMORY

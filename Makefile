@@ -27,8 +27,9 @@ export ROOT_DIR = $(shell pwd)
 
 # BUILD CONFIG
 DEVICES := $(patsubst dev/%.mk,%,$(wildcard dev/*.mk))
-clean_DEVICES = $(addprefix clean_,$(DEVICES))
-dep_DEVICES = $(addprefix dep_,$(DEVICES))
+clean_DEVICES := $(addprefix clean_,$(DEVICES))
+dep_DEVICES := $(addprefix dep_,$(DEVICES))
+flash_DEVICES := $(addprefix flash_,$(DEVICES))
 
 # Pretty Terminal Formatting
 FORMAT_PURPLE = \033[1m\033[95m
@@ -38,11 +39,13 @@ FORMAT_OFF = \033[0m
 
 ################################## TARGETS #####################################
 
-.PHONY: all clean $(DEVICES) $(dep_DEVICES) $(clean_DEVICES)
+.PHONY: all clean flash $(DEVICES) $(dep_DEVICES) $(clean_DEVICES) $(flash_DEVICES)
 
 all: $(DEVICES)
 
 clean: $(clean_DEVICES)
+
+flash: $(flash_DEVICES)
 
 $(DEVICES): % : dep_%
 	@echo "$(FORMAT_PURPLE)Building and Linking $@$(FORMAT_OFF)"
@@ -53,8 +56,8 @@ $(DEVICES): % : dep_%
 	$(eval DFLAGS = )
 	$(foreach DEP, $(DEPENDENCIES), $(eval DFLAGS += $(shell cat $(DEP))))
 	# GCC build and link goes here
-	$(CC) $(CFLAGS) $(DFLAGS) $(LFLAGS) $(SRC) $(OBJECTS) \
-	$(addprefix -I, $(INC)) -Wl,-Map=bin/$@/$@.map -o bin/$@/$@.elf
+	$(CC) $(CFLAGS) $(SRC) $(OBJECTS) $(addprefix -I, $(INC)) \
+	-Wl,-Map=bin/$@/$@.map -o bin/$@/$@.elf $(LFLAGS) $(DFLAGS)
 	# Copy from ELF to binary format
 	$(OBJCOPY) -O binary bin/$@/$@.elf bin/$@/$@.bin
 
@@ -69,4 +72,6 @@ $(clean_DEVICES):
 	rm -rf bin/$(patsubst clean_%,%,$@)
 	rm -rf build/$(patsubst clean_%,%,$@)
 
-
+$(flash_DEVICES): flash_%: %
+	# Executes a custom shell script in ./prog: edit preferences there
+	./flash/$@.sh
