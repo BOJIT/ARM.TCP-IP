@@ -1,6 +1,10 @@
 #ifndef DEVICE_FUNCTIONS
 #define DEVICE_FUNCTIONS
 
-int printOutput(int x);
+/* Function to Initialise all GPIOs */
+void vGPIOInitialize();
+
+/* Function to Toggle Status LED */
+void vStatusLEDToggle();
 
 #endif

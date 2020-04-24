@@ -13,8 +13,9 @@ DEVICE-FRAMEWORK := libopencm3_stm32f4.a
 BUILD_DIR := $(ROOT_DIR)/build/$(DEVICE-NAME)/dev
 
 OBJECTS := $(BUILD_DIR)/device_functions.o
+INC_DEF := -I$(ROOT_DIR)/lib/libopencm3/include  -DSTM32F4
 
-DEPENDENCIES := -I$(ROOT_DIR)/dev/$(DEVICE-NAME) -DSTM32F4 $(DEVICE-FLAGS)
+DEPENDENCIES := -I$(ROOT_DIR)/dev/$(DEVICE-NAME) $(DEVICE-FLAGS)
 DEPENDENCIES += -T$(ROOT_DIR)/dev/$(DEVICE-NAME)/$(DEVICE-NAME).ld
 
 ############################# MAKEFILE GLOBALS #################################
@@ -42,8 +43,8 @@ default: $(OBJECTS)
 
 $(BUILD_DIR)/%.o: $(DEVICE-NAME)/%.c
 	mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(DEVICE-FLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(INC_DEF) $(DEVICE-FLAGS) $< -o $@
 
 $(BUILD_DIR)/%.o: $(DEVICE-NAME)/%.S
 	mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(DEVICE-FLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(INC_DEF) $(DEVICE-FLAGS) $< -o $@

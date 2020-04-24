@@ -55,6 +55,7 @@ $(DEVICES): % : dep_%
 	$(eval DEPENDENCIES = $(shell find build/$@ -name "*.dep"))
 	$(eval DFLAGS = )
 	$(foreach DEP, $(DEPENDENCIES), $(eval DFLAGS += $(shell cat $(DEP))))
+	$(info $(DFLAGS))
 	# GCC build and link goes here
 	$(CC) $(CFLAGS) $(SRC) $(OBJECTS) $(addprefix -I, $(INC)) \
 	-Wl,-Map=bin/$@/$@.map -o bin/$@/$@.elf $(LFLAGS) $(DFLAGS)
