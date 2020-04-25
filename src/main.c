@@ -1,16 +1,16 @@
-// MAIN USER APPLICATION
-#include "device_functions.h"
+/* MAIN USER APPLICATION */
+#include "main.h"
 
 int main(void) {
-	int i;
 
-	vGPIOInitialize();
+    xTaskCreate(startTask1, "task1", 100, NULL, configMAX_PRIORITIES-1, NULL);
 
-	for (;;) {
-		vStatusLEDToggle();	/* LED on */
-		for (i = 0; i < 50000; i++)	/* Wait a bit. */
-			__asm__("nop");
-	}
+    vTaskStartScheduler();
 
-	return 0;
+    // This point is never reached!
+    for (;;);
+    return 0;
 }
+
+
+// SORT OUT CLOCKING! //

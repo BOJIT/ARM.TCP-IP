@@ -4,22 +4,17 @@
 
 ############################### CONFIGURATION ##################################
 
-LIB_NAME = libopencm3.mk
+LIB_NAME = libopencm3
 
 # Build directory of device-specific objects
 BUILD_DIR = $(ROOT_DIR)/build/$(DEVICE-NAME)/lib
 
-
-DEPENDENCIES := -L$(BUILD_DIR) -l$(patsubst lib%.a,%,$(DEVICE-FRAMEWORK))
+LDEPS := -L$(BUILD_DIR) -l$(patsubst lib%.a,%,$(DEVICE-FRAMEWORK))
 
 ############################# MAKEFILE GLOBALS #################################
 
 # Include global headers/compiler flags
 include $(ROOT_DIR)/global.mk
-
-LIBS := $(patsubst $(ROOT_DIR)/lib/%.mk,%,$(wildcard $(ROOT_DIR)/lib/*.mk))
-
-CFLAGS += -c # Don't link files yet	
 
 ################################## TARGETS #####################################
 
@@ -27,9 +22,9 @@ CFLAGS += -c # Don't link files yet
 $(BUILD_DIR)/$(DEVICE-FRAMEWORK):
 	mkdir -p $(@D)
 	# make libopencm3 (builds for all supported platforms)
-	$(MAKE) -C libopencm3
+	$(MAKE) -C $(LIB_NAME)
 	# copy the desired static library to the build folder
-	cp libopencm3/lib/$(DEVICE-FRAMEWORK) $@
-	touch $(BUILD_DIR)/libopencm3.dep
-	echo "$(DEPENDENCIES)" > $(BUILD_DIR)/libopencm3.dep
+	cp $(LIB_NAME)/lib/$(DEVICE-FRAMEWORK) $@
+	touch $(BUILD_DIR)/$(LIB_NAME).ldep
+	echo "$(LDEPS)" > $(BUILD_DIR)/$(LIB_NAME).ldep
 

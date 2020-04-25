@@ -50,15 +50,16 @@ flash: $(flash_DEVICES)
 $(DEVICES): % : dep_%
 	@echo "$(FORMAT_PURPLE)Building and Linking $@$(FORMAT_OFF)"
 	mkdir -p bin/$@
-	# Get device-specific files
-	$(eval OBJECTS = $(shell find build/$@ -name "*.o"))
-	$(eval DEPENDENCIES = $(shell find build/$@ -name "*.dep"))
-	$(eval DFLAGS = )
-	$(foreach DEP, $(DEPENDENCIES), $(eval DFLAGS += $(shell cat $(DEP))))
-	$(info $(DFLAGS))
+	# Get dependencies
+	$(eval CDEPS = $(shell find build/$@ -name "*.cdep"))
+	$(eval CDEPFLAGS = )
+	$(foreach DEP, $(CDEPS), $(eval CDEPFLAGS += $(shell cat $(DEP))))
+	$(eval LDEPS = $(shell find build/$@ -name "*.ldep"))
+	$(eval LDEPFLAGS = )
+	$(foreach DEP, $(LDEPS), $(eval LDEPFLAGS += $(shell cat $(DEP))))
 	# GCC build and link goes here
-	$(CC) $(CFLAGS) $(SRC) $(OBJECTS) $(addprefix -I, $(INC)) \
-	-Wl,-Map=bin/$@/$@.map -o bin/$@/$@.elf $(LFLAGS) $(DFLAGS)
+	$(CC) $(CFLAGS) $(SRC) $(CDEPFLAGS) $(addprefix -I, $(INC)) \
+	-Wl,-Map=bin/$@/$@.map -o bin/$@/$@.elf $(LFLAGS) $(LDEPFLAGS)
 	# Copy from ELF to binary format
 	$(OBJCOPY) -O binary bin/$@/$@.elf bin/$@/$@.bin
 
@@ -75,4 +76,4 @@ $(clean_DEVICES):
 
 $(flash_DEVICES): flash_%: %
 	# Executes a custom shell script in ./prog: edit preferences there
-	./flash/$@.sh
+	./flash/$@.sh $(FLAGS)

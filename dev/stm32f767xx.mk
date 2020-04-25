@@ -7,16 +7,20 @@ DEVICE-NAME := stm32f767xx
 DEVICE-FLAGS := -mcpu=cortex-m7 -mthumb
 DEVICE-FLAGS += -mfloat-abi=hard -mfpu=fpv5-sp-d16
 
+# Select relevant libopencm3 library
 DEVICE-FRAMEWORK := libopencm3_stm32f7.a
+
+# Set FreeRTOS build settings
+DEVICE-RTOS := GCC/ARM_CM7/r0p1
 
 # Build directory of device-specific objects
 BUILD_DIR := $(ROOT_DIR)/build/$(DEVICE-NAME)/dev
 
 OBJECTS := $(BUILD_DIR)/device_functions.o
-INC_DEF := -I$(ROOT_DIR)/lib/libopencm3/include  -DSTM32F4
+INC_DEF := -I$(ROOT_DIR)/lib/libopencm3/include  -DSTM32F7
 
-DEPENDENCIES := -I$(ROOT_DIR)/dev/$(DEVICE-NAME) $(DEVICE-FLAGS)
-DEPENDENCIES += -T$(ROOT_DIR)/dev/$(DEVICE-NAME)/$(DEVICE-NAME).ld
+CDEPS  := $(OBJECTS) -I$(ROOT_DIR)/dev/$(DEVICE-NAME) $(DEVICE-FLAGS)
+LDEPS := -T$(ROOT_DIR)/dev/$(DEVICE-NAME)/$(DEVICE-NAME).ld
 
 ############################# MAKEFILE GLOBALS #################################
 
@@ -27,6 +31,7 @@ include $(ROOT_DIR)/global.mk
 export DEVICE-NAME
 export DEVICE-FLAGS
 export DEVICE-FRAMEWORK
+export DEVICE-RTOS
 
 LIBS := $(patsubst $(ROOT_DIR)/lib/%.mk,%,$(wildcard $(ROOT_DIR)/lib/*.mk))
 
@@ -37,8 +42,10 @@ CFLAGS += -c # Don't link files yet
 default: $(OBJECTS)
 	# Build all libraries for each device with appropriate flags
 	$(foreach LIB,$(LIBS),$(MAKE) -C$(ROOT_DIR)/lib -f$(patsubst %,%.mk,$(LIB));)
-	touch $(BUILD_DIR)/dev.dep
-	echo "$(DEPENDENCIES)" > $(BUILD_DIR)/dev.dep
+	touch $(BUILD_DIR)/dev.cdep
+	echo "$(CDEPS)" > $(BUILD_DIR)/dev.cdep
+	touch $(BUILD_DIR)/dev.ldep
+	echo "$(LDEPS)" > $(BUILD_DIR)/dev.ldep
 
 
 $(BUILD_DIR)/%.o: $(DEVICE-NAME)/%.c

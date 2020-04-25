@@ -1,0 +1,2 @@
+tar extended-remote :4242
+file bin/stm32f767xx/stm32f767xx.elf
