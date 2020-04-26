@@ -12,13 +12,29 @@ void vApplicationStackOverflowHook(
     for(;;);    // Loop forever here..
 }
 
-/* Task 1 - Blink LED 1 */ 
+/* Task 1 - Blink System LED */
 void startTask1(void *args __attribute((unused))) {
 
-    vGPIOInitialize();
+    for (;;) {
+        vSystemLEDToggle();
+        vTaskDelay(100);
+	}
+}
+
+/* Task 2 - Blink Status LED */
+void startTask2(void *args __attribute((unused))) {
 
     for (;;) {
         vStatusLEDToggle();
-        vTaskDelay(pdMS_TO_TICKS(200));
+        vTaskDelay(500);
+	}
+}
+
+/* Task 3 - Blink Warning LED */
+void startTask3(void *args __attribute((unused))) {
+
+    for (;;) {
+        vWarningLEDToggle();
+        vTaskDelay(1000);
 	}
 }

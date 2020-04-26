@@ -12,6 +12,7 @@ DEVICE-FRAMEWORK := libopencm3_stm32f4.a
 
 # Set FreeRTOS build settings
 DEVICE-RTOS := GCC/ARM_CM4F
+DEVICE-RTOS-CONFIG := -I$(ROOT_DIR)/dev/$(DEVICE-NAME)
 
 # Build directory of device-specific objects
 BUILD_DIR := $(ROOT_DIR)/build/$(DEVICE-NAME)/dev
@@ -32,6 +33,7 @@ export DEVICE-NAME
 export DEVICE-FLAGS
 export DEVICE-FRAMEWORK
 export DEVICE-RTOS
+export DEVICE-RTOS-CONFIG
 
 LIBS := $(patsubst $(ROOT_DIR)/lib/%.mk,%,$(wildcard $(ROOT_DIR)/lib/*.mk))
 

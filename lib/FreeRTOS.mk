@@ -17,7 +17,7 @@ SRC += portable/MemMang/heap_4.c portable/$(DEVICE-RTOS)/port.c
 OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.o,$(SRC))
 
 INC := -I$(LIB_ROOT)/include -I$(LIB_ROOT)/portable/$(DEVICE-RTOS)/
-INC += -I$(ROOT_DIR)/inc
+INC += $(DEVICE-RTOS-CONFIG)
 
 LDEPS := $(INC) -L$(BUILD_DIR) -l$(LIB_NAME)
 
